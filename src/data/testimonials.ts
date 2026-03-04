@@ -5,6 +5,58 @@ export type Testimonial = {
   image: string;
 };
 
+const TESTIMONIAL_HIDDEN_IDS_KEY = 'testimonials_hidden_ids';
+
+export const getTestimonialId = (testimonial: Testimonial, index: number) =>
+  `${testimonial.author}-${index}`;
+
+const getHiddenTestimonialIds = (): string[] => {
+  if (typeof window === 'undefined') {
+    return [];
+  }
+
+  try {
+    const raw = window.localStorage.getItem(TESTIMONIAL_HIDDEN_IDS_KEY);
+    if (!raw) {
+      return [];
+    }
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? parsed.filter((id) => typeof id === 'string') : [];
+  } catch {
+    return [];
+  }
+};
+
+const setHiddenTestimonialIds = (ids: string[]) => {
+  if (typeof window === 'undefined') {
+    return;
+  }
+  window.localStorage.setItem(TESTIMONIAL_HIDDEN_IDS_KEY, JSON.stringify(ids));
+};
+
+export const setTestimonialVisibility = (id: string, isVisible: boolean) => {
+  const hiddenIds = getHiddenTestimonialIds();
+  const hiddenSet = new Set(hiddenIds);
+
+  if (isVisible) {
+    hiddenSet.delete(id);
+  } else {
+    hiddenSet.add(id);
+  }
+
+  setHiddenTestimonialIds(Array.from(hiddenSet));
+};
+
+export const getVisibleTestimonials = (items: Testimonial[]) => {
+  const hiddenIds = new Set(getHiddenTestimonialIds());
+  return items.filter((item, index) => !hiddenIds.has(getTestimonialId(item, index)));
+};
+
+export const isTestimonialVisible = (testimonial: Testimonial, index: number) => {
+  const hiddenIds = new Set(getHiddenTestimonialIds());
+  return !hiddenIds.has(getTestimonialId(testimonial, index));
+};
+
 export const featuredTestimonials: Testimonial[] = [
   {
     quote:

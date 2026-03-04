@@ -1,17 +1,32 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import {
-  BarChart3, Users, MessageSquare, Settings, LogOut, Trash2, CheckCircle2
+  BarChart3, Users, MessageSquare, Settings, LogOut, Trash2, CheckCircle2, Eye, EyeOff
 } from 'lucide-react';
 import { PageTransition } from '../components/PageTransition';
-import { testimonialsData } from '../data/testimonials';
+import {
+  testimonialsData,
+  getTestimonialId,
+  isTestimonialVisible,
+  setTestimonialVisibility,
+} from '../data/testimonials';
 
 export const AdminPage = () => {
   const [messages, setMessages] = useState<any[]>([]);
   const [activeTab, setActiveTab] = useState('messages');
   const [isLoading, setIsLoading] = useState(true);
+  const [testimonialVisibility, setTestimonialVisibilityState] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
     void fetchMessages();
+  }, []);
+
+  useEffect(() => {
+    const visibilityMap: Record<string, boolean> = {};
+    testimonialsData.forEach((item, index) => {
+      const id = getTestimonialId(item, index);
+      visibilityMap[id] = isTestimonialVisible(item, index);
+    });
+    setTestimonialVisibilityState(visibilityMap);
   }, []);
 
   const fetchMessages = async () => {
@@ -24,6 +39,12 @@ export const AdminPage = () => {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleToggleVisibility = (id: string, currentlyVisible: boolean) => {
+    const nextVisible = !currentlyVisible;
+    setTestimonialVisibility(id, nextVisible);
+    setTestimonialVisibilityState((prev) => ({ ...prev, [id]: nextVisible }));
   };
 
   const stats = useMemo(
@@ -149,19 +170,39 @@ export const AdminPage = () => {
                 <div className="space-y-4">
                   {testimonialsData.map((item, index) => (
                     <div key={`${item.author}-${index}`} className="p-5 rounded-2xl bg-slate-50 border border-slate-100">
-                      <div className="flex items-start gap-4">
-                        <img
-                          src={item.image}
-                          alt={item.author}
-                          className="w-12 h-12 rounded-full object-cover shrink-0"
-                          referrerPolicy="no-referrer"
-                        />
-                        <div>
-                          <div className="font-bold text-slate-900">{item.author}</div>
-                          <div className="text-sm text-slate-500 mb-2">{item.role}</div>
-                          <p className="text-slate-700 text-sm leading-relaxed">{item.quote}</p>
-                        </div>
-                      </div>
+                      {(() => {
+                        const id = getTestimonialId(item, index);
+                        const visible = testimonialVisibility[id] ?? true;
+                        return (
+                          <>
+                            <div className="flex items-center justify-between mb-3">
+                              <div className={`text-xs font-bold px-2 py-1 rounded-lg ${visible ? 'text-emerald-700 bg-emerald-100' : 'text-amber-700 bg-amber-100'}`}>
+                                {visible ? 'Visible' : 'Hidden'}
+                              </div>
+                              <button
+                                onClick={() => handleToggleVisibility(id, visible)}
+                                className={`text-xs font-bold px-3 py-1.5 rounded-lg inline-flex items-center gap-1 transition-colors ${visible ? 'bg-slate-200 text-slate-700 hover:bg-slate-300' : 'bg-brand-blue text-white hover:bg-brand-blue/90'}`}
+                              >
+                                {visible ? <EyeOff size={14} /> : <Eye size={14} />}
+                                {visible ? 'Hide' : 'Show'}
+                              </button>
+                            </div>
+                            <div className="flex items-start gap-4">
+                              <img
+                                src={item.image}
+                                alt={item.author}
+                                className="w-12 h-12 rounded-full object-cover shrink-0"
+                                referrerPolicy="no-referrer"
+                              />
+                              <div>
+                                <div className="font-bold text-slate-900">{item.author}</div>
+                                <div className="text-sm text-slate-500 mb-2">{item.role}</div>
+                                <p className="text-slate-700 text-sm leading-relaxed">{item.quote}</p>
+                              </div>
+                            </div>
+                          </>
+                        );
+                      })()}
                     </div>
                   ))}
                 </div>

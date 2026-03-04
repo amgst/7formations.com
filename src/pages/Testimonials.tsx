@@ -1,9 +1,11 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import { PageTransition } from '../components/PageTransition';
-import { testimonialsData } from '../data/testimonials';
+import { getVisibleTestimonials, testimonialsData } from '../data/testimonials';
 
 export const TestimonialsPage = () => {
+  const visibleTestimonials = getVisibleTestimonials(testimonialsData);
+
   return (
     <PageTransition>
       <div className="pb-20">
@@ -19,7 +21,7 @@ export const TestimonialsPage = () => {
             </div>
 
             <div className="grid md:grid-cols-2 gap-6 lg:gap-8">
-              {testimonialsData.map((t, i) => (
+              {visibleTestimonials.map((t, i) => (
                 <motion.article
                   key={`${t.author}-${i}`}
                   initial={{ opacity: 0, y: 20 }}
@@ -44,6 +46,9 @@ export const TestimonialsPage = () => {
                 </motion.article>
               ))}
             </div>
+            {visibleTestimonials.length === 0 && (
+              <div className="text-center py-12 text-slate-500">No testimonials are visible right now.</div>
+            )}
           </div>
         </section>
       </div>

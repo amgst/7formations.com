@@ -25,7 +25,7 @@ import { IntegratedManagementSystemTrainingPage } from './pages/IntegratedManage
 import { EarnedValueManagementPage } from './pages/EarnedValueManagement';
 import { CookiesPage, PrivacyPage, TermsPage } from './pages/Legal';
 import { PageTransition } from './components/PageTransition';
-import { featuredTestimonials } from './data/testimonials';
+import { featuredTestimonials, getVisibleTestimonials } from './data/testimonials';
 
 // --- Home Page Components ---
 
@@ -360,23 +360,40 @@ const TrainingServices = () => {
 
 const Testimonials = () => {
   const [activeIndex, setActiveIndex] = useState(0);
+  const visibleFeaturedTestimonials = getVisibleTestimonials(featuredTestimonials);
 
   useEffect(() => {
+    if (visibleFeaturedTestimonials.length <= 1) {
+      return;
+    }
+
     const timer = setInterval(() => {
-      setActiveIndex((prev) => (prev + 1) % featuredTestimonials.length);
+      setActiveIndex((prev) => (prev + 1) % visibleFeaturedTestimonials.length);
     }, 7000);
     return () => clearInterval(timer);
-  }, []);
+  }, [visibleFeaturedTestimonials.length]);
+
+  useEffect(() => {
+    if (activeIndex >= visibleFeaturedTestimonials.length) {
+      setActiveIndex(0);
+    }
+  }, [activeIndex, visibleFeaturedTestimonials.length]);
 
   const goNext = () => {
-    setActiveIndex((prev) => (prev + 1) % featuredTestimonials.length);
+    if (visibleFeaturedTestimonials.length === 0) {
+      return;
+    }
+    setActiveIndex((prev) => (prev + 1) % visibleFeaturedTestimonials.length);
   };
 
   const goPrev = () => {
-    setActiveIndex((prev) => (prev - 1 + featuredTestimonials.length) % featuredTestimonials.length);
+    if (visibleFeaturedTestimonials.length === 0) {
+      return;
+    }
+    setActiveIndex((prev) => (prev - 1 + visibleFeaturedTestimonials.length) % visibleFeaturedTestimonials.length);
   };
 
-  const active = featuredTestimonials[activeIndex];
+  const active = visibleFeaturedTestimonials[activeIndex];
 
   return (
     <section id="testimonials" className="section-padding bg-brand-blue text-white overflow-hidden relative">
@@ -396,25 +413,33 @@ const Testimonials = () => {
         </div>
 
         <div className="max-w-4xl mx-auto">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={`${active.author}-${activeIndex}`}
-              initial={{ opacity: 0, y: 20, scale: 0.98 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: -20, scale: 0.98 }}
-              transition={{ duration: 0.4 }}
-              className="bg-white/10 backdrop-blur-lg border border-white/20 p-8 md:p-10 rounded-[32px] shadow-2xl shadow-black/20"
-            >
-              <p className="text-lg md:text-xl leading-relaxed italic mb-8">"{active.quote}"</p>
-              <div className="flex items-center gap-4">
-                <img src={active.image} alt={active.author} className="w-14 h-14 rounded-full object-cover border-2 border-brand-red" referrerPolicy="no-referrer" />
+          {active ? (
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={`${active.author}-${activeIndex}`}
+                initial={{ opacity: 0, y: 20, scale: 0.98 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: -20, scale: 0.98 }}
+                transition={{ duration: 0.4 }}
+                className="bg-white/10 backdrop-blur-lg border border-white/20 p-8 md:p-10 rounded-[32px] shadow-2xl shadow-black/20"
+              >
+                <p className="text-lg md:text-xl leading-relaxed italic mb-8">"{active.quote}"</p>
                 <div>
-                  <div className="font-bold">{active.author}</div>
-                  <div className="text-sm text-white/80">{active.role}</div>
+                  <div className="flex items-center gap-4">
+                    <img src={active.image} alt={active.author} className="w-14 h-14 rounded-full object-cover border-2 border-brand-red" referrerPolicy="no-referrer" />
+                    <div>
+                      <div className="font-bold">{active.author}</div>
+                      <div className="text-sm text-white/80">{active.role}</div>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </motion.div>
-          </AnimatePresence>
+              </motion.div>
+            </AnimatePresence>
+          ) : (
+            <div className="bg-white/10 backdrop-blur-lg border border-white/20 p-8 md:p-10 rounded-[32px] text-center text-white/80">
+              No visible testimonials right now.
+            </div>
+          )}
 
           <div className="flex items-center justify-between mt-6">
             <button
@@ -425,7 +450,7 @@ const Testimonials = () => {
               <ChevronLeft size={18} />
             </button>
             <div className="flex items-center gap-2">
-              {featuredTestimonials.map((item, index) => (
+              {visibleFeaturedTestimonials.map((item, index) => (
                 <button
                   key={`${item.author}-${index}`}
                   onClick={() => setActiveIndex(index)}
