@@ -290,7 +290,7 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="min-h-screen font-sans selection:bg-brand-blue/10 selection:text-brand-blue">
       <Navbar />
-      <main>{children}</main>
+      <main className="pt-8">{children}</main>
       <Footer />
     </div>
   );

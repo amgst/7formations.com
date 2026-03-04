@@ -48,7 +48,8 @@ export const ContactPage = () => {
                   </div>
                   <div>
                     <div className="text-sm text-slate-500 font-bold uppercase tracking-wider">Call Us</div>
-                    <div className="text-xl font-bold text-slate-900">(617) 657-9377</div>
+                    <div className="text-base font-bold text-slate-900">Greater Boston Area: (617) 657-9377</div>
+                    <div className="text-base font-bold text-slate-900">Washington DC Metro: (571) 327-6440</div>
                   </div>
                 </div>
                 <div className="flex items-center gap-6">

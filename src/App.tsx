@@ -25,7 +25,7 @@ import { IntegratedManagementSystemTrainingPage } from './pages/IntegratedManage
 import { EarnedValueManagementPage } from './pages/EarnedValueManagement';
 import { CookiesPage, PrivacyPage, TermsPage } from './pages/Legal';
 import { PageTransition } from './components/PageTransition';
-import { testimonialsData } from './data/testimonials';
+import { featuredTestimonials } from './data/testimonials';
 
 // --- Home Page Components ---
 
@@ -108,7 +108,7 @@ corporate Quality Management Office (QMO) integrated for multiple ISO standards 
                 to="/about" 
                 className="bg-white text-slate-900 border-2 border-slate-100 px-10 py-5 rounded-2xl font-bold hover:bg-slate-50 hover:border-slate-200 transition-all"
               >
-                Our Process
+                About Us
               </Link>
             </div>
 
@@ -176,13 +176,16 @@ corporate Quality Management Office (QMO) integrated for multiple ISO standards 
               </AnimatePresence>
 
               {/* Overlay Content */}
-              <div className="absolute bottom-10 left-10 right-10 pointer-events-none">
-                <div className="glass-card bg-white/10 backdrop-blur-md border-white/20 p-6 rounded-3xl text-white">
-                  <div className="flex items-center gap-4 mb-2">
+              <div className="absolute bottom-6 right-6 pointer-events-none">
+                <div className="bg-slate-900/75 backdrop-blur-md border border-white/25 p-4 rounded-2xl text-white max-w-[300px] shadow-2xl">
+                  <div className="flex items-center gap-3 mb-2">
                     <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                    <span className="text-xs font-bold uppercase tracking-widest opacity-80">Live Strategy Session</span>
+                    <span className="text-[10px] font-bold uppercase tracking-widest opacity-90">Integrated Management Excellence</span>
                   </div>
-                  <div className="text-2xl font-bold">Driving Global Impact</div>
+                  <div className="text-base font-bold leading-tight">ISO, CMMI, and Process Improvement</div>
+                  <div className="text-xs text-white/90 mt-1.5 leading-relaxed">
+                    Helping aviation, defense, and technology teams achieve measurable compliance and performance gains.
+                  </div>
                 </div>
               </div>
             </div>
@@ -207,22 +210,6 @@ corporate Quality Management Office (QMO) integrated for multiple ISO standards 
               </div>
             </motion.div>
 
-            <motion.div 
-              animate={{ y: [0, 15, 0] }}
-              transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-              className="absolute -bottom-10 -left-10 z-20 bg-white p-6 rounded-3xl shadow-2xl border border-slate-50 hidden xl:block"
-            >
-              <div className="flex items-center gap-4">
-                <div className="w-14 h-14 bg-emerald-500 text-white rounded-2xl flex items-center justify-center shadow-lg shadow-emerald-200">
-                  <BarChart3 size={28} />
-                </div>
-                <div>
-                  <div className="text-2xl font-black text-slate-900">98%</div>
-                  <div className="text-[10px] text-slate-400 uppercase font-bold tracking-widest">Client Satisfaction</div>
-                </div>
-              </div>
-            </motion.div>
-
             {/* Decorative Dots */}
             <div className="absolute -z-10 top-1/2 -right-12 w-24 h-48 grid grid-cols-3 gap-4 opacity-20">
               {[...Array(15)].map((_, i) => (
@@ -241,42 +228,50 @@ const Services = () => {
     { 
       title: "Quality Management (ISO 9001)", 
       description: "Comprehensive implementation and auditing for the world's most recognized quality standard.", 
-      icon: <ShieldCheck className="text-brand-blue" /> 
+      icon: <ShieldCheck className="text-brand-blue" />,
+      href: "/consulting-services/quality-management-iso-9000-family"
     },
     { 
       title: "Aerospace Quality (AS 9100)", 
       description: "Specialized quality management systems for the aviation, space, and defense industries.", 
-      icon: <Globe className="text-brand-blue" /> 
+      icon: <Globe className="text-brand-blue" />,
+      href: "/aerospace-quality-mgmt-systems-as-9100"
     },
     { 
       title: "Info Security (ISO 27001)", 
       description: "Protecting your organization's sensitive information through robust security management.", 
-      icon: <ShieldCheck className="text-brand-blue" /> 
+      icon: <ShieldCheck className="text-brand-blue" />,
+      href: "/consulting-services/information-security-management-systems"
     },
     { 
       title: "Integrated Management System", 
       description: "Combining multiple standards (ISO 27001, 9001, 20000) into one efficient framework.", 
-      icon: <Layers className="text-brand-blue" /> 
+      icon: <Layers className="text-brand-blue" />,
+      href: "/consulting-services/integrated-management-system"
     },
     { 
       title: "Medical Device Quality (ISO 13485)", 
       description: "Ensuring compliance and safety for medical device manufacturing and services.", 
-      icon: <Activity className="text-brand-blue" /> 
+      icon: <Activity className="text-brand-blue" />,
+      href: "/consulting-services"
     },
     { 
       title: "CMMI For Services & Development", 
       description: "Process improvement and appraisal services for service and development organizations.", 
-      icon: <BarChart3 className="text-brand-blue" /> 
+      icon: <BarChart3 className="text-brand-blue" />,
+      href: "/cmmi-models"
     },
     { 
       title: "Enterprise Content Management", 
       description: "Streamlining information flow and document management across the enterprise.", 
-      icon: <Database className="text-brand-blue" /> 
+      icon: <Database className="text-brand-blue" />,
+      href: "/consulting-services/enterprise-content-management"
     },
     { 
       title: "Lean Six Sigma", 
       description: "Methodologies to eliminate waste and reduce variation in your business processes.", 
-      icon: <Zap className="text-brand-blue" /> 
+      icon: <Zap className="text-brand-blue" />,
+      href: "/consulting-services/lean-six-sigma"
     },
   ];
 
@@ -296,18 +291,20 @@ const Services = () => {
               whileHover={{ y: -8, transition: { duration: 0.2 } }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.05 }}
-              className="bg-white p-8 rounded-[32px] border border-slate-100 hover:border-brand-blue/20 hover:shadow-2xl hover:shadow-brand-blue/10 transition-all group cursor-default"
+              className="bg-white p-8 rounded-[32px] border border-slate-100 hover:border-brand-blue/20 hover:shadow-2xl hover:shadow-brand-blue/10 transition-all group"
             >
-              <div className="w-14 h-14 bg-brand-blue/5 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-brand-blue group-hover:text-white transition-colors duration-300">
-                {React.cloneElement(service.icon as React.ReactElement, { 
-                  className: "group-hover:text-white transition-colors duration-300" 
-                })}
-              </div>
-              <h3 className="font-display font-bold text-xl text-slate-900 mb-3 group-hover:text-brand-blue transition-colors">{service.title}</h3>
-              <p className="text-slate-600 text-sm leading-relaxed mb-6">{service.description}</p>
-              <Link to="/contact" className="inline-flex items-center text-brand-blue font-bold text-sm group/link">
-                Learn more 
-                <ChevronRight size={16} className="ml-1 group-hover/link:translate-x-1 transition-transform" />
+              <Link to={service.href} className="block">
+                <div className="w-14 h-14 bg-brand-blue/5 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-brand-blue group-hover:text-white transition-colors duration-300">
+                  {React.cloneElement(service.icon as React.ReactElement, {
+                    className: "group-hover:text-white transition-colors duration-300"
+                  })}
+                </div>
+                <h3 className="font-display font-bold text-xl text-slate-900 mb-3 group-hover:text-brand-blue transition-colors">{service.title}</h3>
+                <p className="text-slate-600 text-sm leading-relaxed mb-6">{service.description}</p>
+                <span className="inline-flex items-center text-brand-blue font-bold text-sm group/link">
+                  Learn more
+                  <ChevronRight size={16} className="ml-1 group-hover/link:translate-x-1 transition-transform" />
+                </span>
               </Link>
             </motion.div>
           ))}
@@ -319,11 +316,11 @@ const Services = () => {
 
 const TrainingServices = () => {
   const trainingItems = [
-    "CMMI Models",
-    "ISO Standards",
-    "Lean Six Sigma",
-    "Integrated Management System",
-    "Earned Value Management (EVM)",
+    { label: "CMMI Models", href: "/cmmi-models" },
+    { label: "ISO Standards", href: "/iso-standards" },
+    { label: "Lean Six Sigma", href: "/lean-six-sigma" },
+    { label: "Integrated Management System", href: "/integrated-management-system" },
+    { label: "Earned Value Management (EVM)", href: "/earned-value-management-evm" },
   ];
 
   return (
@@ -345,9 +342,11 @@ const TrainingServices = () => {
               <h3 className="font-display text-2xl font-bold text-slate-900 mb-5">Programs</h3>
               <ul className="space-y-3">
                 {trainingItems.map((item) => (
-                  <li key={item} className="flex items-start gap-3 text-slate-700">
+                  <li key={item.label} className="flex items-start gap-3 text-slate-700">
                     <span className="mt-2 w-2 h-2 rounded-full bg-brand-red flex-shrink-0" />
-                    <span className="font-medium">{item}</span>
+                    <Link to={item.href} className="font-medium hover:text-brand-blue transition-colors">
+                      {item.label}
+                    </Link>
                   </li>
                 ))}
               </ul>
@@ -364,20 +363,20 @@ const Testimonials = () => {
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setActiveIndex((prev) => (prev + 1) % testimonialsData.length);
+      setActiveIndex((prev) => (prev + 1) % featuredTestimonials.length);
     }, 7000);
     return () => clearInterval(timer);
   }, []);
 
   const goNext = () => {
-    setActiveIndex((prev) => (prev + 1) % testimonialsData.length);
+    setActiveIndex((prev) => (prev + 1) % featuredTestimonials.length);
   };
 
   const goPrev = () => {
-    setActiveIndex((prev) => (prev - 1 + testimonialsData.length) % testimonialsData.length);
+    setActiveIndex((prev) => (prev - 1 + featuredTestimonials.length) % featuredTestimonials.length);
   };
 
-  const active = testimonialsData[activeIndex];
+  const active = featuredTestimonials[activeIndex];
 
   return (
     <section id="testimonials" className="section-padding bg-brand-blue text-white overflow-hidden relative">
@@ -426,7 +425,7 @@ const Testimonials = () => {
               <ChevronLeft size={18} />
             </button>
             <div className="flex items-center gap-2">
-              {testimonialsData.map((item, index) => (
+              {featuredTestimonials.map((item, index) => (
                 <button
                   key={`${item.author}-${index}`}
                   onClick={() => setActiveIndex(index)}
