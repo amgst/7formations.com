@@ -2,7 +2,16 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { PageTransition } from '../components/PageTransition';
 
-const ismsImplementation = {
+type IsoTrainingTab = {
+  title: string;
+  courseObjectives: string[];
+  prerequisites?: string[];
+  whoShouldAttend: string[];
+  sessionTopics: string[];
+  inHouse: string;
+};
+
+const ismsImplementation: IsoTrainingTab = {
   title: 'ISMS Implementation Training',
   courseObjectives: [
     'Designed as a starting point for information security engineers and information assurance consultants to gain appreciation of ISO 27001 ISMS standard',
@@ -33,7 +42,7 @@ const ismsImplementation = {
     'This course can be delivered onsite at your preferred office location. We can plan tailored training as per your company requirements and objectives, including ISMS mapping for your environment.',
 };
 
-const qmsInternalAudit = {
+const qmsInternalAudit: IsoTrainingTab = {
   title: 'QMS Internal Audit Training',
   courseObjectives: [
     'Practical 2-day hands-on course for effective internal auditing techniques',
@@ -61,7 +70,7 @@ const qmsInternalAudit = {
     'This course can be delivered onsite at your preferred office location. We can plan a tailored training according to your specific requirements and objectives.',
 };
 
-const ismsInternalAudit = {
+const ismsInternalAudit: IsoTrainingTab = {
   title: 'ISMS Internal Audit Training',
   courseObjectives: [
     'Practical 2-day hands-on training to develop effective ISMS internal auditing techniques',
@@ -90,7 +99,7 @@ const ismsInternalAudit = {
     'This course can be delivered onsite at your preferred office location. We can plan tailored training as per your company specific requirements and objectives.',
 };
 
-const tabs = [ismsImplementation, qmsInternalAudit, ismsInternalAudit];
+const tabs: IsoTrainingTab[] = [ismsImplementation, qmsInternalAudit, ismsInternalAudit];
 
 const BulletList = ({ items }: { items: string[] }) => (
   <ul className="space-y-3">
@@ -164,7 +173,7 @@ export const IsoStandardsPage = () => {
                   <h3 className="font-display text-2xl font-bold text-slate-900 mb-3">Course Objectives</h3>
                   <BulletList items={current.courseObjectives} />
 
-                  {'prerequisites' in current && current.prerequisites && (
+                  {current.prerequisites && (
                     <div className="mt-7">
                       <h3 className="font-display text-2xl font-bold text-slate-900 mb-3">Prerequisites</h3>
                       <BulletList items={current.prerequisites} />
