@@ -57,13 +57,13 @@ export const Navbar = () => {
           <img 
             src="https://www.7formations.com/wp-content/uploads/2019/09/7Formation-Logo.png" 
             alt="7Formations Logo" 
-            className="h-10 md:h-12 w-auto"
+            className="h-12 md:h-16 w-auto"
             referrerPolicy="no-referrer"
           />
         </Link>
 
         {/* Desktop Nav */}
-        <div className="hidden md:flex items-center gap-8">
+        <div className="hidden md:flex items-center gap-4 lg:gap-8">
           {navLinks.map((link) => (
             <Link 
               key={link.name} 
@@ -151,6 +151,8 @@ export const Navbar = () => {
         {/* Mobile Menu Toggle */}
         <button 
           className="md:hidden text-slate-900"
+          aria-label={isMobileMenuOpen ? "Close navigation" : "Open navigation"}
+          aria-expanded={isMobileMenuOpen}
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
         >
           {isMobileMenuOpen ? <X /> : <Menu />}
@@ -164,7 +166,7 @@ export const Navbar = () => {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="absolute top-full left-0 right-0 bg-white border-t border-slate-100 p-6 shadow-xl md:hidden flex flex-col gap-4"
+            className="absolute top-full left-0 right-0 bg-white border-t border-slate-100 p-6 shadow-xl max-h-[calc(100dvh-96px)] overflow-y-auto md:hidden flex flex-col gap-4"
           >
             {navLinks.map((link) => (
               <Link 
@@ -219,7 +221,7 @@ export const Footer = () => {
             <img 
               src="https://www.7formations.com/wp-content/uploads/2019/09/7Formation-Logo.png" 
               alt="7Formations Logo" 
-              className="h-10 w-auto"
+              className="h-12 w-auto"
               referrerPolicy="no-referrer"
             />
           </div>
@@ -229,13 +231,14 @@ export const Footer = () => {
           <div className="flex gap-4">
             <a
               href="https://www.linkedin.com/in/masajid/"
+              aria-label="Visit LinkedIn profile"
               target="_blank"
               rel="noreferrer"
               className="w-10 h-10 bg-white border border-slate-200 rounded-full flex items-center justify-center text-slate-600 hover:text-brand-blue hover:border-brand-blue transition-all"
             >
               <Linkedin size={18} />
             </a>
-            <a href="#" className="w-10 h-10 bg-white border border-slate-200 rounded-full flex items-center justify-center text-slate-600 hover:text-brand-blue hover:border-brand-blue transition-all">
+            <a href="mailto:info@7formations.com" aria-label="Email 7Formations" className="w-10 h-10 bg-white border border-slate-200 rounded-full flex items-center justify-center text-slate-600 hover:text-brand-blue hover:border-brand-blue transition-all">
               <Mail size={18} />
             </a>
           </div>
@@ -274,7 +277,7 @@ export const Footer = () => {
         </div>
       </div>
       
-      <div className="max-w-7xl mx-auto px-6 md:px-12 pt-8 border-t border-slate-200 flex flex-col md:row items-center justify-between gap-4 text-xs text-slate-400 font-medium uppercase tracking-widest">
+      <div className="max-w-7xl mx-auto px-6 md:px-12 pt-8 border-t border-slate-200 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-400 font-medium uppercase tracking-widest">
         <div>© 2024 7Formations Consulting Services</div>
         <div className="flex gap-8">
           <Link to="/terms" className="hover:text-brand-blue">Terms</Link>

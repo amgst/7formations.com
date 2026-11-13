@@ -1,20 +1,11 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# 7Formations
 
-# Run and deploy your AI Studio app
+Install dependencies with `npm install`, copy `.env.example` to `.env`, and run `npm run dev`.
 
-This contains everything you need to run your app locally.
+Set a unique `ADMIN_PASSWORD` of at least 16 characters and optionally `ADMIN_USERNAME` in the server environment. Admin access and private APIs are disabled until configured. Open `/admin` directly to authenticate with the browser HTTP Basic prompt. Use HTTPS in deployment; local HTTP is for development. Browsers may retain credentials until closed. The dashboard Logout button is currently a placeholder.
 
-View your app in AI Studio: https://ai.studio/apps/7a3c3f5a-9c82-4adf-98fb-420ee0525b34
+For deployment, run `npm run build`, set `NODE_ENV=production` and `APP_URL` to the public HTTPS origin, then run `npx tsx server.ts`. Deploy behind an HTTPS reverse proxy; never expose the development server. Back up SQLite securely and restrict file permissions. The database contains personal contact details and must never be published or committed.
 
-## Run Locally
+Contact submissions are stored in SQLite; email notifications are not implemented. Request limits are in memory per process and use the direct connection IP. A reverse proxy needs client-aware rate limiting; multiple instances need a shared limiter. Do not blindly trust forwarded IP headers.
 
-**Prerequisites:**  Node.js
-
-
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+Testimonial visibility uses localStorage and only affects the current browser. Dashboard overview, logout, mark-as-read and delete-message controls are unfinished. Third-party testimonial image URLs may expire; replace with approved local images. Hosting, TLS, backups and dependency advisories require separate deployment verification.

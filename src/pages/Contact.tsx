@@ -4,6 +4,8 @@ import { Mail, Phone, Linkedin, Send, CheckCircle2 } from 'lucide-react';
 import { PageTransition } from '../components/PageTransition';
 
 export const ContactPage = () => {
+  const [error, setError] = useState('');
+  const [isSending, setIsSending] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
@@ -14,18 +16,24 @@ export const ContactPage = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (isSending) return;
+    setError('');
+    setIsSending(true);
     try {
       const res = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData)
       });
+      if (!res.ok) throw new Error(res.status === 429 ? 'Too many attempts. Please try again in 15 minutes.' : 'Unable to send your message. Please try again.');
       if (res.ok) {
         setIsSubmitted(true);
         setFormData({ name: '', email: '', subject: 'Consulting Inquiry', message: '' });
       }
     } catch (err) {
-      console.error(err);
+      setError(err instanceof Error ? err.message : 'Unable to send your message. Please try again.');
+    } finally {
+      setIsSending(false);
     }
   };
 
@@ -140,11 +148,13 @@ export const ContactPage = () => {
                       placeholder="Tell us about your requirements..."
                     ></textarea>
                   </div>
+                  <p role="alert" className="text-red-600 text-sm">{error}</p>
                   <button 
+                    disabled={isSending}
                     type="submit"
                     className="w-full bg-brand-red text-white py-5 rounded-2xl font-bold hover:bg-brand-red/90 transition-all shadow-xl shadow-brand-red/20 flex items-center justify-center gap-2"
                   >
-                    <Send size={20} /> Send Message
+                    <Send size={20} /> {isSending ? 'Sending...' : 'Send Message'}
                   </button>
                 </form>
               )}

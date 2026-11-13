@@ -577,6 +577,7 @@ const AnimatedRoutes = () => {
           <Route path="/terms" element={<Layout><TermsPage /></Layout>} />
           <Route path="/privacy" element={<Layout><PrivacyPage /></Layout>} />
           <Route path="/cookies" element={<Layout><CookiesPage /></Layout>} />
+          <Route path="*" element={<Layout><section className="section-padding text-center"><h1 className="text-4xl font-bold">Page not found</h1><Link to="/" className="text-brand-blue underline">Return home</Link></section></Layout>} />
         </Routes>
       </motion.div>
     </AnimatePresence>

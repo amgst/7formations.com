@@ -11,6 +11,7 @@ import {
 } from '../data/testimonials';
 
 export const AdminPage = () => {
+  const [error, setError] = useState('');
   const [messages, setMessages] = useState<any[]>([]);
   const [activeTab, setActiveTab] = useState('messages');
   const [isLoading, setIsLoading] = useState(true);
@@ -32,10 +33,11 @@ export const AdminPage = () => {
   const fetchMessages = async () => {
     try {
       const res = await fetch('/api/messages');
+      if (!res.ok) throw new Error('Administrator access is required to load inquiries.');
       const data = await res.json();
       setMessages(data);
     } catch (err) {
-      console.error(err);
+      setError(err instanceof Error ? err.message : 'Unable to load inquiries.');
     } finally {
       setIsLoading(false);
     }
@@ -140,6 +142,7 @@ export const AdminPage = () => {
                 </div>
               ) : activeTab === 'messages' ? (
                 <div className="space-y-6">
+                  {error && <p role="alert" className="text-red-600">{error}</p>}
                   {messages.length === 0 ? (
                     <div className="text-center py-12 text-slate-400">No messages yet.</div>
                   ) : (
